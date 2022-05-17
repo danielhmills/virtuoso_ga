@@ -1,7 +1,7 @@
 -- Jaccard Similarity (J(A, B) = |A∩B| / |A∪B|)
 
-DROP PROCEDURE jaccard_similarity_sp;
-CREATE procedure jaccard_similarity_sp(IN source VARCHAR, IN property VARCHAR, IN target VARCHAR){
+DROP PROCEDURE jaccard_similarity_sp_long;
+CREATE procedure jaccard_similarity_sp_long(IN source VARCHAR, IN property VARCHAR, IN target VARCHAR){
 
     -- Declare Variables
 
@@ -19,8 +19,8 @@ CREATE procedure jaccard_similarity_sp(IN source VARCHAR, IN property VARCHAR, I
     _inx := 0;
 
     -- Query Strings
-    q1 := sprintf('SPARQL SELECT DISTINCT ?o WHERE {<%s> %s ?o}', source, property);
-    q2 := sprintf('SPARQL SELECT DISTINCT ?o WHERE {<%s> %s ?o}', target, property);
+    q1 := sprintf('SPARQL DEFINE output:valmode "LONG" SELECT DISTINCT ?o WHERE {<%s> %s ?o}', source, property);
+    q2 := sprintf('SPARQL DEFINE output:valmode "LONG" SELECT DISTINCT ?o WHERE {<%s> %s ?o}', target, property);
     
     -- Get Source Data, and add to array a
 
@@ -29,7 +29,7 @@ CREATE procedure jaccard_similarity_sp(IN source VARCHAR, IN property VARCHAR, I
     VECTORBLD_INIT(a);
 
     WHILE(_inx < length(ax)){
-        VECTORBLD_ACC(a,md5(ax[_inx][0]));
+        VECTORBLD_ACC(a,ax[_inx][0]);
         _inx := _inx + 1;
     };
 
@@ -46,7 +46,7 @@ CREATE procedure jaccard_similarity_sp(IN source VARCHAR, IN property VARCHAR, I
     VECTORBLD_INIT(b);
 
     WHILE(_inx < length(bx)){
-        VECTORBLD_ACC(b,md5(bx[_inx][0]));
+        VECTORBLD_ACC(b,bx[_inx][0]);
         _inx := _inx + 1;
     };
 
@@ -118,5 +118,4 @@ CREATE procedure jaccard_similarity_sp(IN source VARCHAR, IN property VARCHAR, I
 
 SPARQL LOAD <http://dbpedia.org/resource/Eternals_(film)>;
 SPARQL LOAD <http://dbpedia.org/resource/Salt_(2010_film)>;
-SELECT jaccard_similarity_sp('http://dbpedia.org/resource/Eternals_(film)','<http://dbpedia.org/ontology/starring>', 'http://dbpedia.org/resource/Salt_(2010_film)');
-
+SELECT jaccard_similarity_sp_long('http://dbpedia.org/resource/Eternals_(film)','<http://dbpedia.org/ontology/starring>', 'http://dbpedia.org/resource/Salt_(2010_film)');
