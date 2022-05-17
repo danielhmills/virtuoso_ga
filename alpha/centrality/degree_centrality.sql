@@ -8,7 +8,7 @@ CREATE PROCEDURE degree_centrality(IN entity VARCHAR, IN attribute VARCHAR, IN n
     IF(named_graph <> '?g'){
         named_graph := sprintf('<%s>',named_graph);
     };
-    IF(regexp_match('(\\w+\:\\w+)','foaf:knows')){
+    IF(regexp_match('(\\w+\:\\w+)',attribute)){
         attribute := attribute;
     }
     ELSE{
