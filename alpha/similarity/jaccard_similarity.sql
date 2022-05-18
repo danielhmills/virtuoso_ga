@@ -1,7 +1,7 @@
 -- Jaccard Similarity (J(A, B) = |A∩B| / |A∪B|)
 
-DROP PROCEDURE jaccard_similarity_sp_long;
-CREATE procedure jaccard_similarity_sp_long(IN source VARCHAR, IN property VARCHAR, IN target VARCHAR){
+DROP PROCEDURE jaccard_similarity;
+CREATE procedure jaccard_similarity(IN source VARCHAR, IN property VARCHAR, IN target VARCHAR){
 
     -- Declare Variables
 
@@ -118,4 +118,4 @@ CREATE procedure jaccard_similarity_sp_long(IN source VARCHAR, IN property VARCH
 
 SPARQL LOAD <http://dbpedia.org/resource/Eternals_(film)>;
 SPARQL LOAD <http://dbpedia.org/resource/Salt_(2010_film)>;
-SELECT jaccard_similarity_sp_long('http://dbpedia.org/resource/Eternals_(film)','<http://dbpedia.org/ontology/starring>', 'http://dbpedia.org/resource/Salt_(2010_film)');
+SELECT jaccard_similarity('http://dbpedia.org/resource/Eternals_(film)','<http://dbpedia.org/ontology/starring>', 'http://dbpedia.org/resource/Salt_(2010_film)');
